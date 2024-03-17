@@ -55,14 +55,27 @@ describe("RPS game", () => {
   });
   // Play the game with the 'Scissors' option and check the result
   it("play the game with scissors option and check the result", () => {
-    //Click the 'Rock' button should exist
-    //Check that the user option is set to 'Rock'
+    //Click the 'Scissors' button should exist
+    cy.get('[data-cy="scissors"]').should("exist").click();
+    //Check that the user option is set to 'Scissors'
+    cy.get('[data-cy="user-option"]').should("have.text", "Scissors");
     //Check the computer option
-    //If the computer option is set to 'Rock'
-    //the result is a tie
-    //If the computer option is set to 'Paper'
-    //the result is a computer win
-    //If the computer option is set to 'Scissors'
-    //the result is a user win
+    cy.get('[data-cy="computer-option"]').then((option) => {
+      //If the computer option is set to 'Rock'
+      if (option.text().includes("Rock")) {
+        //the result is a computer win
+        cy.get('[data-cy="result"]').contains("The computer wins, you lose!");
+      }
+      //If the computer option is set to 'Paper'
+      else if (option.text().includes("Paper")) {
+        //the result is a user win
+        cy.get('[data-cy="result"]').contains("You win!");
+      }
+      //If the computer option is set to 'Scissors'
+      else {
+        //the result is a tie
+        cy.get('[data-cy="result"]').contains("It's a tie!");
+      }
+    });
   });
 });
